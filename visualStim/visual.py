@@ -6,6 +6,8 @@ from pyglet import app
 
 import controller
 import time
+import os
+import json
 import logging
 logger = logging.getLogger(__name__)
 
@@ -16,6 +18,8 @@ film = []
 colormap_copy = []
 this_trial = {'color_sequence': []}
 trial_count = 0
+filmString = ""
+actualFilm = []
 
 
 def makeFilm(paradigm):
@@ -33,10 +37,11 @@ def makeFilm(paradigm):
 
 def makeFilm_reverse(paradigm):
     """Reformat stim sequence for pyglet usage, in reverse order."""
-    # film = []
+    global filmString
     rawFilm = controller.generatePlaylist(paradigm)
 
-    # TODO: store raw film information into database
+    # store raw film information into database
+    filmString = json.dumps(rawFilm)
 
     for each_session in rawFilm:
         for each_trial in each_session['trial_sequence']:
@@ -62,7 +67,7 @@ def flick(dt):
 def flick_reverse(dt):
     """Flicker for makeFilm_reverse()."""
     global timer, start_time, film, this_image, colormap_copy, this_trial
-    global trial_count
+    global trial_count, actualFilm
 
     # FIXME: too complex.
     if time.time() - start_time > timer:
@@ -90,8 +95,21 @@ def flick_reverse(dt):
                 left=trial_count-len(film[-1]['trial_sequence']) + 1,
                 total=trial_count)+':'+this_trial['name'])
 
+        actualFilm.append((colorname, step))
         this_image = colormap_copy[colorname]
         timer += step
+
+
+def storeDataIntoFile(dataToStore, dir_path=".", prefix=False):
+    if not prefix:
+        prefix = time.strftime("%y%m%d_%H%M_{count}.json")
+    prefix = os.path.join(dir_path, prefix)
+    counter = 0
+    while os.path.isfile(prefix.format(count=counter)):
+        counter += 1
+
+    with open(prefix.format(count=counter), 'w') as output:
+        output.write(dataToStore)
 
 
 def start(colormap, paradigm):
@@ -112,6 +130,11 @@ def start(colormap, paradigm):
     def on_key_press(symbol, modifier):
         if symbol == key.ESCAPE or symbol == key.Q:
             # TODO: quitting in the middle way.
+            storeDataIntoFile(filmString)
+            storeDataIntoFile(
+                actualFilm.__str__(),
+                prefix=time.strftime("actual_%y%m%d_%H%M_{count}.temp"))
+
             exit(0)
 
     @window.event

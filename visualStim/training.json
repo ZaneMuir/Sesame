@@ -1,7 +1,7 @@
 {
     "session_name":"training",
-    "length":1,
-    "interval":1,
+    "length":0.5,
+    "interval":0.5,
     "shuffle":true,
     "trial_count":10,
     "loop":1,
@@ -42,13 +42,13 @@
         "nogo_stim_1": {
             "type":"no go",
             "stimulus":false,
-            "weight":3,
+            "weight":1,
             "paradigm":["green","blue","blue"]
         },
         "nogo_stim_2": {
             "type":"no go",
             "stimulus":false,
-            "weight":3,
+            "weight":1,
             "paradigm":["blue","green","green"]
         }
     }

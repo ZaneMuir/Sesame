@@ -70,7 +70,7 @@ def generateTrialSequence(paradigm):
                     utilityTrial['gap'],
                     paradigm['length'], paradigm['interval']))
     else:
-        pass  # TODO
+        pass  # TODO: not shuffle one!
 
     newTrialSequence.append(
         generateSingleTrial(utilityTrial['quiting'], isUtility=True))
