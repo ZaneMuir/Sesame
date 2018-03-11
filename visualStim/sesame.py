@@ -18,7 +18,7 @@ Options:
     -q              # quiet mode
     -H HEIGHT       # screen height [default: 1920]
     -W WIDTH        # screen width [default: 1080]
-    -c COLORMAPS    # color map file [default: stimColorNames.json]
+    -c COLORMAPS    # color map file [default: config/stimColorNames.json]
 """.format(version=__version__)
 
 from docopt import docopt
