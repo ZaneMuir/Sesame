@@ -102,8 +102,10 @@ def flick_reverse(dt):
 
 def storeDataIntoFile(dataToStore, dir_path="./recording", prefix=False):
     """Store data before quiting."""
+    global start_time
+
     if not prefix:
-        prefix = time.strftime("%y%m%d_%H%M_{count}.json")
+        prefix = time.strftime("%y%m%d_%H%M_{count}.data")
     prefix = os.path.join(dir_path, prefix)
     counter = 0
     while os.path.isfile(prefix.format(count=counter)):
@@ -111,6 +113,8 @@ def storeDataIntoFile(dataToStore, dir_path="./recording", prefix=False):
 
     with open(prefix.format(count=counter), 'w') as output:
         output.write(dataToStore)
+        output.write("\n")
+        output.write(start_time.__str__())
 
 
 def start(colormap, paradigm):
@@ -144,7 +148,7 @@ def start(colormap, paradigm):
             storeDataIntoFile(filmString)
             storeDataIntoFile(
                 actualFilm.__str__(),
-                prefix=time.strftime("actual_%y%m%d_%H%M_{count}.temp"))
+                prefix=time.strftime("actual_%y%m%d_%H%M_{count}.data"))
 
             exit(0)
 
