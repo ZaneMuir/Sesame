@@ -1,22 +1,9 @@
 """trival operations."""
 
 import json
-import numpy as np
 from pyglet.image import SolidColorImagePattern
 import logging
 logger = logging.getLogger(__name__)
-
-
-def getColorMaps(colornamefile, screensize=(1920, 1080, 3)):
-    """Return colormap in numpy.array."""
-    with open(colornamefile, 'r') as f:
-        content = f.read()
-
-    colormap = {}
-    for name, array in json.loads(content).items():
-        colormap[name] = np.ones(screensize, dtype='uint8') * \
-                         np.array(array, dtype='uint8')
-    return colormap
 
 
 def getPygeltColorMaps(colornamefile, screensize=(1920, 1080, 3)):

@@ -100,7 +100,8 @@ def flick_reverse(dt):
         timer += step
 
 
-def storeDataIntoFile(dataToStore, dir_path=".", prefix=False):
+def storeDataIntoFile(dataToStore, dir_path="./recording", prefix=False):
+    """Store data before quiting."""
     if not prefix:
         prefix = time.strftime("%y%m%d_%H%M_{count}.json")
     prefix = os.path.join(dir_path, prefix)
@@ -116,8 +117,16 @@ def start(colormap, paradigm):
     """Pyglet.app in loop."""
     global this_image, start_time, film, colormap_copy, trial_count
 
-    # TODO: widow setups, esp. for fullscreen.
-    window = pyglet.window.Window(width=640, height=480)
+    # TODO: window setups, esp. for fullscreen.
+    display = pyglet.window.get_platform().get_default_display()
+    screens = display.get_screens()
+
+    '''for screen in display.get_screens():
+    print screen
+    window = pyglet.window.Window()
+    window.on_draw = on_draw
+
+    window.set_fullscreen(screen=screen)'''
 
     colormap_copy = colormap
     fps_display = pyglet.clock.ClockDisplay()
@@ -125,8 +134,10 @@ def start(colormap, paradigm):
     film = makeFilm_reverse(paradigm)
     # film = makeFilm(paradigm).reverse()
     trial_count = len(film[-1]['trial_sequence']) - 2
+    controller = pyglet.window.Window()
+    windows = [pyglet.window.Window() for _ in range(5)]
 
-    @window.event
+    @controller.event
     def on_key_press(symbol, modifier):
         if symbol == key.ESCAPE or symbol == key.Q:
             # TODO: quitting in the middle way.
@@ -137,15 +148,29 @@ def start(colormap, paradigm):
 
             exit(0)
 
-    @window.event
+    @controller.event
     def on_draw():
         global this_image
-        window.clear()
-        this_image.blit(0, 0)
+        controller.clear()
+        this_image.blit(0, 0)  # QUESTION: do we need a larger image?
         fps_display.draw()
+
+    def drawer(this):
+        def temp():
+            global this_image
+            this.clear()
+            this_image.blit(0, 0)
+        return temp
+
+    for item in windows:
+        item.on_draw = drawer(item)
 
     start_time = time.time()
     pyglet.clock.schedule(flick_reverse)
-
+    try:
+        for index in range(5):
+            windows[index].set_fullscreen(screen=screens[index+1])
+    except IndexError:
+        pass
     # pyglet.clock.schedule(flick)
     app.run()

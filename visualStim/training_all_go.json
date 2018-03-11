@@ -1,0 +1,43 @@
+{
+    "session_name":"training",
+    "length":0.5,
+    "interval":0.5,
+    "shuffle":true,
+    "trial_count":10,
+    "loop":1,
+
+    "utility":{
+        "starting":{
+            "name":"starting",
+            "color":"black",
+            "length":5
+        },
+
+        "quiting":{
+            "name":"quiting",
+            "color":"black",
+            "length":1
+        },
+
+        "gap":{
+            "name":"gap",
+            "color":"black",
+            "length":7
+        }
+    },
+
+    "playlist":{
+        "go_stim_1": {
+            "type":"go",
+            "stimulus":true,
+            "weight":10,
+            "paradigm":["green","green","blue"]
+        },
+        "go_stim_2": {
+            "type":"go",
+            "stimulus":true,
+            "weight":1,
+            "paradigm":["blue","blue","green"]
+        }
+    }
+}
