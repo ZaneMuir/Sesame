@@ -30,7 +30,7 @@
         "go_stim_1": {
             "type":"go",
             "stimulus":true,
-            "weight":1,
+            "weight":10,
             "paradigm":["green","green","blue"]
         },
         "go_stim_2": {

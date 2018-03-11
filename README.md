@@ -52,16 +52,11 @@ CREATE TABLE summary {
     SessionType TEXT,
     SessionSerial INT,
     SessionDate INT,
-    SessionTime TEXT,
+    SessionTime REAL,
     Mouse TEXT,
-    Setup BLOB,
-    Result BLOB,
+    Setup TEXT,
+    Result TEXT,
     HitRate REAL,
     FalseAlarmRate REAL
 };
-
-CREATE TABLE %SessionID%_TwoPhoton {
-    NeuronID INT,
-    Timeline BLOB
-}
 ```

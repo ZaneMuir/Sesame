@@ -5,6 +5,8 @@ import docopt
 from phenosys_csv import get_lick_list
 from visualStim_recording import get_trial_list, get_start_time
 
+# TODO: pip them together.
+
 start_time = get_start_time("../demo/data_sample/180311_1934_0.data")
 trial_list = get_trial_list("../demo/data_sample/180311_1934_0.data")
 lick_list = get_lick_list("../demo/data_sample/Kaleidoscope-18.03.11.csv", start_time)

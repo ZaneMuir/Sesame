@@ -22,22 +22,22 @@
         "gap":{
             "name":"gap",
             "color":"black",
-            "length":7
+            "length":5
         }
     },
 
     "playlist":{
-        "go_stim_1": {
-            "type":"go",
-            "stimulus":true,
+        "nogo_stim_1": {
+            "type":"no go",
+            "stimulus":false,
             "weight":1,
-            "paradigm":["green","green","blue"]
+            "paradigm":["green","blue","blue"]
         },
-        "go_stim_2": {
-            "type":"go",
-            "stimulus":true,
+        "nogo_stim_2": {
+            "type":"no go",
+            "stimulus":false,
             "weight":1,
-            "paradigm":["blue","blue","green"]
+            "paradigm":["blue","green","green"]
         }
     }
 }
