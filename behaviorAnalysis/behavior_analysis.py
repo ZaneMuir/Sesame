@@ -1,18 +1,36 @@
 """Behavior analysis."""
 import numpy as np
+import os
 # import pandas as pd
-import docopt
+# import docopt
 from phenosys_csv import get_lick_list
 from visualStim_recording import get_trial_list, get_start_time
 
 # TODO: pip them together.
 
-start_time = get_start_time("../demo/data_sample/180311_1934_0.data")
-trial_list = get_trial_list("../demo/data_sample/180311_1934_0.data")
-lick_list = get_lick_list("../demo/data_sample/Kaleidoscope-18.03.11.csv", start_time)
 
+def get_behavior_result(stim_record, lick_record, needActual=False, cutoff=0):
+    """Portal to get major results.
 
-def get_behavior_result():
+    **return**
+    result: {
+        'hit': [],
+        'miss': 0,
+        'correct_reject': 0,
+        'false_alarm': []}
+    misc: {
+        'start_time': start_time,
+        'trial_list': trial_list: [(go/no-go, start, end), ...],
+        'lick_list': lick_list: [timestamp, ...]}
+    """
+    if needActual:
+        dir_path, stim_path = os.path.split(stim_record)
+        stim_record = os.path.join(dir_path, "actual_"+stim_path)
+
+    start_time = get_start_time(stim_record)
+    trial_list = get_trial_list(stim_record, cutoff)
+    lick_list = get_lick_list(lick_record, start_time)
+
     result = {
         'hit': [],
         'miss': 0,
@@ -34,4 +52,8 @@ def get_behavior_result():
                 result['correct_reject'] += 1
             else:
                 result['false_alarm'].append(count)
-    return result
+    misc = {
+        'start_time': start_time,
+        'trial_list': trial_list,
+        'lick_list': lick_list}
+    return result, misc

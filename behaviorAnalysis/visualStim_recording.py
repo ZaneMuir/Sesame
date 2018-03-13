@@ -28,8 +28,12 @@ def get_stimulus_func(filename, projection):
     return search
 
 
-def get_trial_list(filename, cutoff=0):
-    """Get trial info and time numpy.array from phenosys csv."""
+def get_trial_list(filename, cutoff):
+    """Get trial info and time numpy.array from phenosys csv.
+
+    **example**
+    [(go/no-go, start_time, end_time), ...]
+    """
     with open(filename, "r") as inputfile:
         false = False
         true = True
@@ -51,7 +55,7 @@ def get_trial_list(filename, cutoff=0):
 
 
 def get_start_time(filename):
-    """Get the start timestamp."""
+    """Get the start Unix timestamp."""
     with open(filename, 'r') as inputfile:
         inputfile.readline()
         start_time = inputfile.readline()
