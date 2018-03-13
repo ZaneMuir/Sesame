@@ -105,6 +105,7 @@ def storeDataIntoFile(dataToStore, dir_path="./recording", prefix=False):
     global start_time
 
     if not prefix:
+        # QUESTION: make prefix or change the name.
         prefix = time.strftime("%y%m%d_%H%M_{count}.data")
     prefix = os.path.join(dir_path, prefix)
     counter = 0
@@ -156,7 +157,7 @@ def start(colormap, paradigm):
     def on_draw():
         global this_image
         controller.clear()
-        this_image.blit(0, 0)  # QUESTION: do we need a larger image?
+        this_image.blit(0, 0)
         fps_display.draw()
 
     def drawer(this):
@@ -175,6 +176,7 @@ def start(colormap, paradigm):
         for index in range(5):
             windows[index].set_fullscreen(screen=screens[index+1])
     except IndexError:
+        logger.warn("no secondary screens.")
         pass
     # pyglet.clock.schedule(flick)
     app.run()
