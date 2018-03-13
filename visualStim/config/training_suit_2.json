@@ -1,22 +1,22 @@
 {
-    "session_name":"training",
+    "session_name":"training_suit_2",
     "length":0.5,
     "interval":0.5,
     "shuffle":true,
-    "trial_count":10,
+    "trial_count":120,
     "loop":1,
 
     "utility":{
         "starting":{
             "name":"starting",
             "color":"black",
-            "length":5
+            "length":10
         },
 
         "quiting":{
             "name":"quiting",
             "color":"black",
-            "length":1
+            "length":3
         },
 
         "gap":{
@@ -36,8 +36,20 @@
         "go_stim_2": {
             "type":"go",
             "stimulus":true,
-            "weight":1,
+            "weight":0,
             "paradigm":["blue","blue","green"]
+        },
+        "nogo_stim_1": {
+            "type":"no go",
+            "stimulus":false,
+            "weight":1,
+            "paradigm":["green","blue","blue"]
+        },
+        "nogo_stim_2": {
+            "type":"no go",
+            "stimulus":false,
+            "weight":0,
+            "paradigm":["blue","green","green"]
         }
     }
 }

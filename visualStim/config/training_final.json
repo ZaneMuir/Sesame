@@ -1,9 +1,9 @@
 {
-    "session_name":"training",
+    "session_name":"training_final",
     "length":0.5,
     "interval":0.5,
     "shuffle":true,
-    "trial_count":10,
+    "trial_count":180,
     "loop":1,
 
     "utility":{
@@ -22,7 +22,7 @@
         "gap":{
             "name":"gap",
             "color":"black",
-            "length":5
+            "length":7
         }
     },
 
