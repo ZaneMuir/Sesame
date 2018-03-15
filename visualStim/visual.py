@@ -100,19 +100,22 @@ def flick_reverse(dt):
         timer += step
 
 
-def storeDataIntoFile(dataToStore, dir_path="./recording", prefix=False):
+def storeDataIntoFile(dataToStore,
+                      dir_path="./recording",
+                      prefix="",
+                      name=""):
     """Store data before quiting."""
     global start_time
 
-    if not prefix:
-        # QUESTION: make prefix or change the name.
-        prefix = time.strftime("%y%m%d_%H%M_{count}.data")
-    prefix = os.path.join(dir_path, prefix)
-    counter = 0
-    while os.path.isfile(prefix.format(count=counter)):
-        counter += 1
+    filename = time.strftime("{prefix}%y%m%d_%H%M_{name}.data")
+    filename = filename.format(name=name, prefix=prefix)
+    filename = os.path.join(dir_path, filename)
 
-    with open(prefix.format(count=counter), 'w') as output:
+    if os.path.isfile(filename):
+        raise ValueError("file already exsits: " + prefix + \
+                         "\n wait for another minute.")
+
+    with open(filename, 'w') as output:
         output.write(dataToStore)
         output.write("\n")
         output.write(start_time.__str__())
@@ -145,11 +148,11 @@ def start(colormap, paradigm):
     @controller.event
     def on_key_press(symbol, modifier):
         if symbol == key.ESCAPE or symbol == key.Q:
-            # TODO: quitting in the middle way.
-            storeDataIntoFile(filmString)
+            # quitting in the middle way.
+            # storeDataIntoFile(filmString)
             storeDataIntoFile(
                 actualFilm.__str__(),
-                prefix=time.strftime("actual_%y%m%d_%H%M_{count}.data"))
+                prefix="actual_")
 
             exit(0)
 
@@ -171,6 +174,7 @@ def start(colormap, paradigm):
         item.on_draw = drawer(item)
 
     start_time = time.time()
+    storeDataIntoFile(filmString)
     pyglet.clock.schedule(flick_reverse)
     try:
         for index in range(5):

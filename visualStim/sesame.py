@@ -16,8 +16,8 @@ Usage: sesame.py [options] PARADIGM
 Options:
     --debug
     -q              # quiet mode
-    -H HEIGHT       # screen height [default: 1920]
-    -W WIDTH        # screen width [default: 1080]
+    -H HEIGHT       # screen height [default: 1280]
+    -W WIDTH        # screen width [default: 1024]
     -c COLORMAPS    # color map file [default: config/stimColorNames.json]
 """.format(version=__version__)
 
@@ -42,4 +42,4 @@ with open(arguments["PARADIGM"], 'r') as p_file:
     logger.debug("read paradigm file: " + arguments["PARADIGM"])
 
 # start
-visual.start(colormap, paradigm)  # TODO: window configurations.
+visual.start(colormap, paradigm)
