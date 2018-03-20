@@ -19,7 +19,7 @@ def normalizeWindowsCSVFile(filename):
 
 def get_lick_list(filename, start_time=0):
     """Get lick time numpy.array from phenosys csv."""
-    normalizeWindowsCSVFile(filename)
+    # normalizeWindowsCSVFile(filename)
     phenosys_datasheet = pd.read_csv(filename)
 
     lick_filter = phenosys_datasheet[phenosys_datasheet.SystemMsg == "lick"]

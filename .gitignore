@@ -2,6 +2,7 @@
 temp
 demo/
 recording/
+chart/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

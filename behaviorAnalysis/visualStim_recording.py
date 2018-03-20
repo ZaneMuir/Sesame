@@ -48,7 +48,7 @@ def get_trial_list(filename, cutoff):
                 (1, acc_seq-item['color_sequence'][-1][1], acc_seq-cutoff))
         elif item['type'] == 'no go':
             trial_list.append(
-                (0, acc_seq-item['color_sequence'][-1][1], acc_seq-cutoff))
+                (-1, acc_seq-item['color_sequence'][-1][1], acc_seq-cutoff))
         else:
             pass
     return np.array(trial_list)
