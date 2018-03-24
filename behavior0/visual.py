@@ -112,7 +112,7 @@ def storeDataIntoFile(dataToStore,
     filename = os.path.join(dir_path, filename)
 
     if os.path.isfile(filename):
-        raise ValueError("file already exsits: " + prefix + \
+        raise ValueError("file already exsits: " + prefix +
                          "\n wait for another minute.")
 
     with open(filename, 'w') as output:
