@@ -13,16 +13,6 @@ import random
 import sys
 logger = logging.getLogger(__name__)
 
-current_color_name = "black"
-timer = 1
-colormap = cf.getPygeltColorMaps(32)
-playlist = [name for name in colormap.keys()
-            if name != "black" and name != "white" and name[0] in "GB"]
-random.shuffle(playlist)
-color_cursor = 0
-start_time = 0
-trialName = "demo"
-
 if sys.platform == "win32":
     def elapsed():
         return time.clock()
@@ -35,7 +25,7 @@ else:
 def flick(dt):
     """Flicker for makeFilm()."""
     global timer, current_color_name, playlist, color_cursor, start_time
-    global trialName
+    global trialName, subjectName
 
     if elapsed() > timer:
         if color_cursor % 2 == 0:
@@ -44,7 +34,8 @@ def flick(dt):
             storeDataIntoFile(
                 "{start},{color}".format(start=elapsed(),
                                          color=current_color_name),
-                prefix=trialName)
+                prefix=subjectName,
+                name=trialName)
             timer += 1
             logger.info("{round}:{trial}/{total}:{color}".format(
                 round=color_cursor // 2 // len(playlist),
@@ -66,7 +57,7 @@ def storeDataIntoFile(dataToStore,
     """Store data before quiting."""
     global timer
 
-    filename = time.strftime("{prefix}_%y%m%d{name}.csv")
+    filename = time.strftime("{prefix}_%y%m%d_{name}.csv")
     filename = filename.format(name=name, prefix=prefix)
     filename = os.path.join(dir_path, filename)
 
@@ -81,10 +72,11 @@ def storeDataIntoFile(dataToStore,
             output.write("\n")
 
 
-def start(trial, windowN):
+def start(subject, trial, windowN):
     """Pyglet.app in loop."""
-    global start_time, trialName
+    global start_time, trialName, subjectName
     trialName = trial
+    subjectName = subject
     # TODO: window setups, esp. for fullscreen.
     display = pyglet.window.get_platform().get_default_display()
     screens = display.get_screens()
@@ -96,14 +88,14 @@ def start(trial, windowN):
 
     @controller.event
     def on_key_press(symbol, modifier):
-        global current_color_name, timer
         if symbol == key.ESCAPE or symbol == key.Q:
             # quitting in the middle way.
             # storeDataIntoFile(filmString)
             storeDataIntoFile(
                 "{startstamp},{colorname}".format(startstamp=time.time(),
                                                   colorname="QUIT"),
-                prefix=trialName)
+                prefix=subjectName,
+                name=trialName)
 
             exit(0)
 
@@ -130,7 +122,8 @@ def start(trial, windowN):
     start_time = time.time()
     storeDataIntoFile("{startstamp},{colorname}".format(startstamp=start_time,
                                                         colorname="START"),
-                      prefix=trialName)
+                      prefix=subjectName,
+                      name=trialName)
 
     pyglet.clock.schedule(flick)
     try:
@@ -148,11 +141,13 @@ if __name__ == '__main__':
     __doc__ = """
     Sesame {version}
 
-    Usage: sesame_tuning_curve.py [options] SESSIONNAME
+    Usage: sesame_tuning_curve.py [options] SUBJECT
 
     Options:
         --debug
-        --window=WINDOWN    # number of secondary screeens [default: 2]
+        --window=WINDOWN    # number of secondary screeens [default: 1]
+        --session=TEST      # test name [default: demo]
+        --mode=MODE         # stimulus mode [default: GB]
     """.format(version=__version__)
     from docopt import docopt
     arguments = docopt(__doc__, version=__version__)
@@ -162,4 +157,19 @@ if __name__ == '__main__':
     else:
         logging.basicConfig(level=logging.INFO)
 
-    start(arguments['SESSIONNAME'], int(arguments['--window']))
+    current_color_name = "black"
+    timer = 10
+    colormap = cf.getPygeltColorMaps(32)
+    playlist = [name for name in colormap.keys()
+                if name != "black" and name != "white" and
+                name[0] in arguments['--mode']]
+    random.shuffle(playlist)
+    color_cursor = 0
+    start_time = 0
+    trialName = "demo"
+    subjectName = "ts0"
+
+    start(
+        arguments['SUBJECT'],
+        arguments['--mode'],
+        int(arguments['--window']))

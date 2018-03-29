@@ -13,7 +13,7 @@ def generateColorMapName(step):
     n = int(256/step)
     cmap.extend([("G"+str(i+1), (0, (i+1)*step, 0)) for i in range(n)])
     cmap.extend([("B"+str(i+1), (0, 0, (i+1)*step)) for i in range(n)])
-    cmap.extend([("L"+str(i+1)+","+str(j+1), (0, (i+1)*step, (j+1)*step))
+    cmap.extend([("L"+str(i+1)+"#"+str(j+1), (0, (i+1)*step, (j+1)*step))
                  for i in range(n) for j in range(n)])
 
     return cmap
