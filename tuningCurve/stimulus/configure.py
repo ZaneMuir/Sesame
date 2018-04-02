@@ -7,8 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 def generateColorMapName(step):
-    cmap = [("white", (255, 255, 255)),
-            ("black", (0, 0, 0))]
+    cmap = []
 
     n = int(256/step)
     cmap.extend([("G"+str(i+1), (0, (i+1)*step, 0)) for i in range(n)])
@@ -19,15 +18,24 @@ def generateColorMapName(step):
     return cmap
 
 
-def getPygeltColorMaps(step, screensize=(1920, 1080, 3)):
+def getPygeltColorMaps(step, height=900, width=1440, depth=3, suffix=""):
     """Return colormap in pyglet.image."""
 
     colormap = {}
-    for name, array in generateColorMapName(step):
+    source = generateColorMapName(step)
+    for name, array in source:
+        r, g, b = [i if i < 256 else 255 for i in array]
+        a = 255
+        thename = name+suffix
+        colormap[thename] = SolidColorImagePattern((r, g, b, a)).create_image(
+            width=width, height=height)
+
+    source = [("white", (255, 255, 255)), ("black", (0, 0, 0))]
+    for name, array in source:
         r, g, b = [i if i < 256 else 255 for i in array]
         a = 255
         colormap[name] = SolidColorImagePattern((r, g, b, a)).create_image(
-            width=screensize[0], height=screensize[1])
+            width=1280, height=1080)
 
     logger.debug("generate colors: " + colormap.keys().__str__())
     return colormap
