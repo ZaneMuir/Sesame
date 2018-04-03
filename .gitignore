@@ -3,6 +3,7 @@ temp
 demo/
 recording/
 chart/
+map/
 
 *.ipynb
 
