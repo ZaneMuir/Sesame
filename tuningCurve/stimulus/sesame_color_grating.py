@@ -147,6 +147,7 @@ def start(subject, trial, windowN):
             global current_color_name, colormap, x_pos, y_pos
             this.clear()
             colormap[current_color_name].blit(x_pos, y_pos)
+            colormap[current_color_name].blit(x_pos+100, y_pos)
         return temp
 
     for item in windows:
