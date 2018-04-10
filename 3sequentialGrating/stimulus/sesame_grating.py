@@ -6,73 +6,77 @@ import pyglet
 from pyglet.window import key
 from pyglet import app
 
+from numpy import cos, sin
 import time
 import os
 import logging
 import random
 import sys
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 if sys.platform == "win32":
     def elapsed():
+        """In windows, clock is better."""
         return time.clock()
 else:
     def elapsed():
+        """In other systems, time is used."""
         global start_time
         return time.time() - start_time
 
-screen_width = 1
-screen_height = 1
-x_pos = 0
-y_pos = 0
-x_speed = 0
-y_speed = 0
-ori = ''
 
-
-def update_pos(ori, dt=0, reset=False):
-    global x_pos, y_pos, x_speed, y_speed, screen_width, screen_height
-    if ori == 'h':
-        x_pos = 0 if reset else x_pos + x_speed*dt
-    elif ori == 'H':
-        x_pos = screen_width if reset else x_pos - x_speed*dt
-    elif ori == 'v':
-        y_pos = 0 if reset else y_pos + y_speed*dt
-    elif ori == 'V':
-        y_pos = screen_height if reset else y_pos - y_speed*dt
+def update_pos(ori, dt=0, reset=False, T=50):
+    """Update position in each tick."""
+    global x_pos, y_pos, speed, screen_width, screen_height, setoff_x, setoff_y
+    if reset:
+        x_pos = -setoff_x
+        y_pos = -setoff_y
+        logging.debug("reset pos to: "+str(x_pos)+", "+str(y_pos))
+    elif x_pos > 0 or y_pos > 0:
+        x_pos = -setoff_x + speed * cos(ori) * dt
+        y_pos = -setoff_y + speed * sin(ori) * dt
+        logging.debug("reset pos to: "+str(x_pos)+", "+str(y_pos))
     else:
-        pass
+        x_pos += speed * cos(ori) * dt
+        y_pos += speed * sin(ori) * dt
+        logging.debug("new pos: "+str(x_pos)+", "+str(y_pos))
 
 
 def flick(dt):
     """Flicker for makeFilm()."""
-    global timer, current_color_name, playlist, color_cursor, start_time
+    global timer, current_color_name, playlist, stim_cursor, start_time
     global trialName, subjectName, screen_width, screen_height, x_pos, y_pos
-    global moving_speed, sleep_time, x_speed, y_speed, ori
+    global sleep_time, speed, ori, colormap, setoff_x, setoff_y
 
     update_pos(ori, dt)
 
     if elapsed() > timer:
-        if color_cursor % 2 == 0:
-            current_color_name, ori = playlist[color_cursor//2 % len(playlist)]
-            color_cursor += 1
+        if stim_cursor % 2 == 0:
+            current_color_name, ori, L, speed, stim_duration = \
+                playlist[stim_cursor//2 % len(playlist)]
+            stim_cursor += 1
+            setoff_x = L*cos(ori)
+            setoff_y = L*sin(ori)
+            x_pos = -setoff_x
+            y_pos = -setoff_y
             storeDataIntoFile(
                 "{start},{color}".format(start=elapsed(),
                                          color=current_color_name),
                 prefix=subjectName,
                 name=trialName)
-            timer += moving_speed
+            timer += stim_duration
             update_pos(ori, reset=True)
             logger.info("{round}:{trial}/{total}:{color}".format(
-                round=color_cursor // 2 // len(playlist),
-                trial=color_cursor // 2 % len(playlist),
+                round=stim_cursor // 2 // len(playlist),
+                trial=stim_cursor // 2 % len(playlist),
                 total=len(playlist),
                 color=current_color_name
             ))
         else:
-            ori = ''
+            ori = 0
             current_color_name = 'black'
-            color_cursor += 1
+            stim_cursor += 1
             timer += sleep_time
             logger.debug(current_color_name+', until: '+str(timer))
 
@@ -102,7 +106,7 @@ def storeDataIntoFile(dataToStore,
 def start(subject, trial, windowN):
     """Pyglet.app in loop."""
     global start_time, trialName, subjectName, screen_width, screen_height
-    global x_speed, y_speed, moving_speed
+
     trialName = trial
     subjectName = subject
     # TODO: window setups, esp. for fullscreen.
@@ -112,12 +116,10 @@ def start(subject, trial, windowN):
 
     screen_width = screens[-1].width
     screen_height = screens[-1].height
-    x_speed = screen_width / moving_speed
-    y_speed = screen_height / moving_speed
 
     # film = makeFilm(paradigm).reverse()
     controller = pyglet.window.Window()
-    windows = [pyglet.window.Window(1440, 900) for _ in range(windowN)]
+    windows = [pyglet.window.Window(1440,1080) for _ in range(windowN)]
 
     @controller.event
     def on_key_press(symbol, modifier):
@@ -134,7 +136,7 @@ def start(subject, trial, windowN):
 
     @controller.event
     def on_draw():
-        global current_color_name, colormap
+        global current_color_name
         controller.clear()
         if current_color_name is "black":
             colormap['black'].blit(0, 0)
@@ -147,7 +149,6 @@ def start(subject, trial, windowN):
             global current_color_name, colormap, x_pos, y_pos
             this.clear()
             colormap[current_color_name].blit(x_pos, y_pos)
-            colormap[current_color_name].blit(x_pos+100, y_pos)
         return temp
 
     for item in windows:
@@ -170,64 +171,55 @@ def start(subject, trial, windowN):
     app.run()
 
 
-if __name__ == '__main__':
-    __version__ = "v1.0-dev"
-    __doc__ = """
-    Sesame {version}
+def movingGrate(grating_dict,  # Dict{name: (grating, theta, L, moving_speed)}
+                subject="", suffix="", window_num=1,
+                high_duration=5, low_duration=5,
+                initial_wait=5, inital_color="black",
+                stim_seq=None, shuffle=False):
+    """Portal function."""
+    global current_color_name, timer, colormap
+    global playlist, stim_cursor
+    global x_pos, y_pos, speed, ori
+    global sleep_time, setoff_x, setoff_y
 
-    Usage: sesame_tuning_curve.py [options] SUBJECT
+    current_color_name = inital_color
+    timer = initial_wait
 
-    Options:
-        --debug
-        --window=WINDOWN        # number of secondary screeens [default: 1]
-        --session=TEST          # test name [default: demo]
-        --mode=MODE             # stimulus mode [default: GB]
-        --direction=DIRECT      # grate direction [default: vh]
-        --gratingwidth=WIDTH    # width of grate [default: 50]
-        --speed=SPEED           # grating moving speed [default: 2]
-        --sleep=SLEEP           # gap time [default: 3]
-    """.format(version=__version__)
-    from docopt import docopt
-    arguments = docopt(__doc__, version=__version__)
+    pre_playlist = stim_seq or ['white']
 
-    if arguments['--debug']:
-        logging.basicConfig(level=logging.DEBUG)
-    else:
-        logging.basicConfig(level=logging.INFO)
 
-    current_color_name = "black"
-    timer = 2
-
+    default_map = cf.generatePygletBWMap()
     colormap = {}
-    if 'v' in arguments['--direction']:
-        colormap.update(cf.getPygeltColorMaps(32,
-                        height=int(arguments['--gratingwidth']),
-                        suffix='v'))
-    if 'h' in arguments['--direction']:
-        colormap.update(cf.getPygeltColorMaps(32,
-                        width=int(arguments['--gratingwidth']),
-                        suffix='h'))
-    if 'V' in arguments['--direction']:
-        colormap.update(cf.getPygeltColorMaps(32,
-                        height=int(arguments['--gratingwidth']),
-                        suffix='V'))
-    if 'H' in arguments['--direction']:
-        colormap.update(cf.getPygeltColorMaps(32,
-                        width=int(arguments['--gratingwidth']),
-                        suffix='H'))
 
-    playlist = [(name, name[-1]) for name in colormap.keys()
-                if name != "black" and name != "white" and
-                name[0] in arguments['--mode']]
-    random.shuffle(playlist)
-    color_cursor = 0
-    start_time = 0
-    trialName = "demo"
-    subjectName = "ts0"
-    moving_speed = float(arguments['--speed'])
-    sleep_time = float(arguments['--sleep'])
+    for (key, (grating, theta, L, moving_speed)) in grating_dict.items():
+        themap = cf.generatePygletGrating(grating, L=L, theta=theta, title=key)
+        colormap[key] = themap
+    colormap.update(default_map)
 
-    start(
-        arguments['SUBJECT'],
-        arguments['--mode'],
-        int(arguments['--window']))
+    playlist = []
+    for name in pre_playlist:
+        try:
+            theta, L, moving_speed = grating_dict[name][1:]
+        except KeyError:
+            theta, L, moving_speed = 0, 0, 0
+        playlist.append((name, theta, L, moving_speed, high_duration))
+
+    if shuffle:
+        random.shuffle(playlist)
+
+    stim_cursor = 0
+    first_stim = playlist[0]
+    setoff_x = first_stim[2]*cos(first_stim[1])
+    setoff_y = first_stim[2]*sin(first_stim[1])
+    x_pos = -setoff_x
+    y_pos = -setoff_y
+    ori = first_stim[1]
+    sleep_time = low_duration
+    speed = first_stim[3]
+
+    start(subject, suffix, window_num)
+
+
+if __name__ == '__main__':
+    pass
+    # TODO: add layers.
