@@ -1,0 +1,55 @@
+{
+    "session_name":"training_final",
+    "length":0.5,
+    "interval":0.5,
+    "shuffle":true,
+    "trial_count":180,
+    "loop":1,
+
+    "utility":{
+        "starting":{
+            "name":"starting",
+            "color":"black",
+            "length":5
+        },
+
+        "quiting":{
+            "name":"quiting",
+            "color":"black",
+            "length":1
+        },
+
+        "gap":{
+            "name":"gap",
+            "color":"black",
+            "length":7
+        }
+    },
+
+    "playlist":{
+        "go_stim_1": {
+            "type":"go",
+            "stimulus":true,
+            "weight":1,
+            "paradigm":["green","green","blue"]
+        },
+        "go_stim_2": {
+            "type":"go",
+            "stimulus":true,
+            "weight":1,
+            "paradigm":["blue","blue","green"]
+        },
+        "nogo_stim_1": {
+            "type":"no go",
+            "stimulus":false,
+            "weight":1,
+            "paradigm":["green","blue","blue"]
+        },
+        "nogo_stim_2": {
+            "type":"no go",
+            "stimulus":false,
+            "weight":1,
+            "paradigm":["blue","green","green"]
+        }
+    }
+}
