@@ -119,7 +119,7 @@ def start(subject, trial, windowN):
 
     # film = makeFilm(paradigm).reverse()
     controller = pyglet.window.Window()
-    windows = [pyglet.window.Window(1440,1080) for _ in range(windowN)]
+    windows = [pyglet.window.Window() for _ in range(windowN)]
 
     @controller.event
     def on_key_press(symbol, modifier):

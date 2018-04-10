@@ -12,7 +12,7 @@ def sineWave(A, L, theta, phi):
 
     return lambda a, b: value(a,b,255)
 
-moving_speed = 100
+moving_speed = 150
 grating_list = {
     # (grating, theta, L, moving_speed)
     "A": (sineWave(1, 50, 0, 0), pi/2, 50, moving_speed),
@@ -21,8 +21,17 @@ grating_list = {
 
 movingGrate(grating_list,
             subject="test", suffix="sine_grating", window_num=1,
-            high_duration=2, low_duration=2,
+            high_duration=1, low_duration=1,
             initial_wait=5, inital_color="black",
             stim_seq=[
                 # (name[, high_duration])
-                "A","B","A","B","B","black","black"])
+                "A","B","A","B","A","black","black","black",
+                "A","B","A","B","A","black","black","black",
+                "A","B","A","B","A","black","black","black",
+                "A","B","A","B","A","black","black","black",
+                "A","B","A","B","A","black","black","black",
+                "A","B","A","B","A","black","black","black",
+                "A","B","A","B","B","black","black","black",
+                "A","B","A","B","A","black","black","black",
+                "A","B","A","B","A","black","black","black",
+                "A","B","A","B","A","black","black","black"])
