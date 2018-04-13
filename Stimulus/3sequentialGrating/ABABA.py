@@ -21,7 +21,7 @@ grating_list = {
 
 movingGrate(grating_list,
             subject="test", suffix="sine_grating", window_num=1,
-            high_duration=1, low_duration=1,
+            high_duration=1.5, low_duration=1.5,
             initial_wait=5, inital_color="black",
             stim_seq=[
                 # (name[, high_duration])
