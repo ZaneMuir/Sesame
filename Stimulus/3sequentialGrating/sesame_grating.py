@@ -98,7 +98,7 @@ def storeDataIntoFile(dataToStore,
             output.write("\n")
     else:
         with open(filename, 'w') as output:
-            output.write("startstamp,colorname\n")
+            output.write("time,marker\n")
             output.write(dataToStore)
             output.write("\n")
 
