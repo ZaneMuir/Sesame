@@ -41,7 +41,7 @@ def generatePygletGrating(grating, height=1080, width=1440,
 def generatePygletBWMap(height=1080, width=1440, L=50):
     """Generate image with a given function."""
     colormap = {}
-    source = [("white", (255, 255, 255, 255)), ("black", (0, 0, 0, 255))]
+    source = [("white", (255, 255, 255, 255)), ("gray", (0, 0, 0, 255)),("black", (128, 128, 128, 255))]
     for name, array in source:
         r, g, b, a = array
         colormap[name] = SolidColorImagePattern((r, g, b, a)).create_image(
