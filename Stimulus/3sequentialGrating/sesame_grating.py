@@ -25,6 +25,8 @@ else:
         global start_time
         return time.time() - start_time
 
+default_color_name = 'gray'
+
 
 def update_pos(ori, dt=0, reset=False, T=50):
     """Update position in each tick."""
@@ -52,14 +54,14 @@ def flick(dt):
     update_pos(ori, dt)
 
     if elapsed() > timer:
-        if stim_cursor % 2 == 0:
-            current_color_name, ori, L, speed, stim_duration = \
+        current_color_name, ori, L, speed, stim_duration = \
                 playlist[stim_cursor//2 % len(playlist)]
-            stim_cursor += 1
-            setoff_x = L*cos(ori)
-            setoff_y = L*sin(ori)
-            x_pos = -setoff_x
-            y_pos = -setoff_y
+        stim_cursor += 1
+        setoff_x = L*cos(ori)
+        setoff_y = L*sin(ori)
+        x_pos = -setoff_x
+        y_pos = -setoff_y
+        if stim_cursor % 2 == 0:
             storeDataIntoFile(
                 "{start},{color}".format(start=elapsed(),
                                          color=current_color_name),
@@ -75,8 +77,8 @@ def flick(dt):
             ))
         else:
             ori = 0
-            current_color_name = 'black'
-            stim_cursor += 1
+            speed = 0
+            current_color_name = default_color_name
             timer += sleep_time
             logger.debug(current_color_name+', until: '+str(timer))
 
@@ -138,7 +140,7 @@ def start(subject, trial, windowN):
     def on_draw():
         global current_color_name
         controller.clear()
-        if current_color_name is "black":
+        if current_color_name == default_color_name:
             colormap['black'].blit(0, 0)
         else:
             colormap['white'].blit(0, 0)
@@ -174,7 +176,7 @@ def start(subject, trial, windowN):
 def movingGrate(grating_dict,  # Dict{name: (grating, theta, L, moving_speed)}
                 subject="", suffix="", window_num=1,
                 high_duration=5, low_duration=5,
-                initial_wait=5, inital_color="black",
+                initial_wait=5, inital_color=default_color_name,
                 stim_seq=None, shuffle=False):
     """Portal function."""
     global current_color_name, timer, colormap
@@ -186,7 +188,6 @@ def movingGrate(grating_dict,  # Dict{name: (grating, theta, L, moving_speed)}
     timer = initial_wait
 
     pre_playlist = stim_seq or ['white']
-
 
     default_map = cf.generatePygletBWMap()
     colormap = {}
@@ -215,7 +216,7 @@ def movingGrate(grating_dict,  # Dict{name: (grating, theta, L, moving_speed)}
     y_pos = -setoff_y
     ori = first_stim[1]
     sleep_time = low_duration
-    speed = first_stim[3]
+    speed = 0
 
     start(subject, suffix, window_num)
 

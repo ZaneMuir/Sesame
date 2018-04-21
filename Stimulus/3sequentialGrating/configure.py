@@ -34,14 +34,16 @@ def generatePygletGrating(grating, height=1080, width=1440,
         logger.debug("generating map: "+title)
 
         return ImageData(width=canvas_size[0], height=canvas_size[1],
-                             data=datamap.tobytes(), format='RGBA',
-                             pitch=canvas_size[0]*4)
+                         data=datamap.tobytes(), format='RGBA',
+                         pitch=canvas_size[0]*4)
 
 
 def generatePygletBWMap(height=1080, width=1440, L=50):
     """Generate image with a given function."""
     colormap = {}
-    source = [("white", (255, 255, 255, 255)), ("gray", (0, 0, 0, 255)),("black", (128, 128, 128, 255))]
+    source = [("white", (255, 255, 255, 255)),
+              ("black", (0, 0, 0, 255)),
+              ("gray", (128, 128, 128, 255))]
     for name, array in source:
         r, g, b, a = array
         colormap[name] = SolidColorImagePattern((r, g, b, a)).create_image(
