@@ -20,18 +20,18 @@ grating_list = {
 }
 
 movingGrate(grating_list,
-            subject="test", suffix="sine_grating", window_num=1,
-            high_duration=1, low_duration=1,
-            initial_wait=5, inital_color="black",
+            subject="test", suffix="ABABB", window_num=1,
+            high_duration=1.5, low_duration=1.5,
+            initial_wait=15, inital_color="gray",
             stim_seq=[
                 # (name[, high_duration])
-                "A", "B", "A", "B", "A", "black", "black", "black",
-                "A", "B", "A", "B", "A", "black", "black", "black",
-                "A", "B", "A", "B", "A", "black", "black", "black",
-                "A", "B", "A", "B", "A", "black", "black", "black",
-                "A", "B", "A", "B", "A", "black", "black", "black",
-                "A", "B", "A", "B", "A", "black", "black", "black",
-                "A", "B", "A", "B", "B", "black", "black", "black",
-                "A", "B", "A", "B", "A", "black", "black", "black",
-                "A", "B", "A", "B", "A", "black", "black", "black",
-                "A", "B", "A", "B", "A", "black", "black", "black"])
+                "A", "B", "A", "B", "A", "gray", "gray", "gray",
+                "A", "B", "A", "B", "A", "gray", "gray", "gray",
+                "A", "B", "A", "B", "A", "gray", "gray", "gray",
+                "A", "B", "A", "B", "A", "gray", "gray", "gray",
+                "A", "B", "A", "B", "A", "gray", "gray", "gray",
+                "A", "B", "A", "B", "A", "gray", "gray", "gray",
+                "A", "B", "A", "B", "A", "gray", "gray", "gray",
+                "A", "B", "A", "B", "A", "gray", "gray", "gray",
+                "A", "B", "A", "B", "B", "gray", "gray", "gray",
+                "A", "B", "A", "B", "A", "gray", "gray", "gray"])

@@ -4,6 +4,7 @@ demo/
 recording/
 chart/
 map/
+.vscode/
 
 
 # Byte-compiled / optimized / DLL files
