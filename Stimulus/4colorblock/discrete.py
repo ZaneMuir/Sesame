@@ -29,4 +29,8 @@ blue_up = [
 
 _stim_seq = green_down + blue_up
 
-main(_colors, _stim_seq, initial_wait=2)
+
+def start_experiment(subject, suffix, windown, initialwait, high, low):
+    main(_colors, _stim_seq, initial_wait=initialwait,
+         high_duration=high, low_duration=low,
+         subject=subject, suffix=suffix, window_num=windown)

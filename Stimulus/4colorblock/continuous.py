@@ -12,16 +12,19 @@ _colors = {
 }
 
 
-def _up(shiftt): return 50 + 50 * shiftt
+def _up_linear(shiftt): return 50 + 50 * shiftt
 
 
-def _down(shiftt): return 255 - 50 * shiftt
+def _down_linear(shiftt): return 255 - 50 * shiftt
 
 
 _stim_seq = [
-    ("green", _down , "green_down"),
-    ("blue", _up , "blue_up")
+    ("green", _down_linear , "green_down"),
+    ("blue", _up_linear , "blue_up")
 ]
 
-main(_colors, _stim_seq, initial_wait=2, 
-     high_duration=4, low_duration=4)
+
+def start_experiment(subject, suffix, windown, initialwait, high, low):
+    main(_colors, _stim_seq, initial_wait=initialwait,
+         high_duration=high, low_duration=low,
+         subject=subject, suffix=suffix, window_num=windown)

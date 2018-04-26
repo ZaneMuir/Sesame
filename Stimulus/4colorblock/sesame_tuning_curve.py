@@ -14,9 +14,11 @@ import sys
 logger = logging.getLogger(__name__)
 
 if sys.platform == "win32":
+    logger.debug("win32 detected")
     def elapsed():
         return time.clock()
 else:
+    logger.debug("win32 not detected")
     def elapsed():
         global start_time
         return time.time() - start_time
@@ -171,7 +173,7 @@ def start(subject, trial, windowN):
 #                 initial_wait = 5, inital_color = default_color_name,
 #                 stim_seq = None, shuffle = False
 
-def main(colordict, stim_seq, window_num=1, mode="discrete",
+def main(colordict, stim_seq, window_num=1,
          subject="test",  suffix="", high_duration = 2, low_duration=2,
          initial_wait = 60, initial_color="gray", background_color="gray",
          shuffle=False):
@@ -204,44 +206,3 @@ def main(colordict, stim_seq, window_num=1, mode="discrete",
 
     start(subject, suffix, window_num)
 
-
-    
-
-
-if __name__ == '__main__':
-    __version__ = "v1.0-dev"
-    __doc__ = """
-    Sesame {version}
-
-    Usage: sesame_tuning_curve.py [options] SUBJECT
-
-    Options:
-        --debug
-        --window=WINDOWN    # number of secondary screeens [default: 1]
-        --session=TEST      # test name [default: demo]
-        --mode=MODE         # stimulus mode [default: GB]
-    """.format(version=__version__)
-    from docopt import docopt
-    arguments = docopt(__doc__, version=__version__)
-
-    if arguments['--debug']:
-        logging.basicConfig(level=logging.DEBUG)
-    else:
-        logging.basicConfig(level=logging.INFO)
-
-    current_color_name = "black"
-    timer = 10
-    colormap = cf.getPygeltColorMaps(32)
-    playlist = [name for name in colormap.keys()
-                if name != "black" and name != "white" and
-                name[0] in arguments['--mode']]
-    random.shuffle(playlist)
-    stim_cursor = 0
-    start_time = 0
-    trialName = "demo"
-    subjectName = "ts0"
-
-    start(
-        arguments['SUBJECT'],
-        arguments['--mode'],
-        int(arguments['--window']))
