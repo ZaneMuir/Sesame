@@ -1,7 +1,13 @@
 """Demo."""
 
 from sesame_grating import movingGrate
-from numpy import sin, cos, pi, sign
+try:
+    from numpy2 import sin, cos, pi
+except ModuleNotFoundError:
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.warn("numpy not found, using math module")
+    from math import sin, cos, pi
 
 
 def sineWave(A, L, theta, phi):
@@ -22,7 +28,7 @@ grating_list = {
 movingGrate(grating_list,
             subject="test", suffix="ABABA", window_num=1,
             high_duration=1.5, low_duration=1.5,
-            initial_wait=180, inital_color="gray",
+            initial_wait=5, inital_color="gray",
             stim_seq=[
                 # (name[, high_duration])
                 "A", "B", "A", "B", "A", "gray", "gray", "gray"])

@@ -1,8 +1,13 @@
 """Demo."""
 
 from sesame_grating import movingGrate
-from numpy import sin, cos, pi, sign
-
+try:
+    from numpy2 import sin, cos, pi
+except ModuleNotFoundError:
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.warn("numpy not found, using math module")
+    from math import sin, cos, pi
 
 def sineWave(A, L, theta, phi):
     """Sine wave funciton."""

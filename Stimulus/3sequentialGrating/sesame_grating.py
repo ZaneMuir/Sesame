@@ -5,8 +5,10 @@ import configure as cf
 import pyglet
 from pyglet.window import key
 from pyglet import app
-
-from numpy import cos, sin
+try:
+    from numpy2 import cos, sin
+except ModuleNotFoundError:
+    from math import cos, sin
 import time
 import os
 import logging

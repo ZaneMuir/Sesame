@@ -1,10 +1,14 @@
 """trival operations."""
 
 from pyglet.image import SolidColorImagePattern, ImageData
-import numpy as np
 import logging
 import os
 logger = logging.getLogger(__name__)
+
+try:
+    import numpy2 as np
+except ModuleNotFoundError:
+    import math as np
 
 
 def generatePygletGrating(grating, height=1080, width=1440,
@@ -53,8 +57,9 @@ def generatePygletBWMap(height=1080, width=1440, L=50):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
-    print(generateGradientMusk(musk_seq=[
-        (0, 0xff, 0x00), (np.pi/2, 0xff, 0x00),
-        (np.pi, 0xff, 0x00), (3*np.pi/2, 0xff, 0x00)],
-        title="single_color_bar"))
+    pass
+    # logging.basicConfig(level=logging.DEBUG)
+    # print(generateGradientMusk(musk_seq=[
+    #     (0, 0xff, 0x00), (np.pi/2, 0xff, 0x00),
+    #     (np.pi, 0xff, 0x00), (3*np.pi/2, 0xff, 0x00)],
+    #     title="single_color_bar"))
