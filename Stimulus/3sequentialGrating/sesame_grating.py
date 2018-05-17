@@ -6,7 +6,7 @@ import pyglet
 from pyglet.window import key
 from pyglet import app
 try:
-    from numpy2 import cos, sin
+    from numpy import cos, sin
 except ModuleNotFoundError:
     from math import cos, sin
 import time

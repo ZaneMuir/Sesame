@@ -6,12 +6,12 @@ import os
 logger = logging.getLogger(__name__)
 
 try:
-    import numpy2 as np
+    import numpy as np
 except ModuleNotFoundError:
     import math as np
 
 
-def generatePygletGrating(grating, height=1080, width=1440,
+def generatePygletGrating(grating, height=1280, width=1024,
                           L=50, theta=0, title=""):
     canvas_size = (width+2*L, height+2*L)  # width, height
     map_dir = os.path.join("map", "{prefix}_{p1}_{p2}_{p3}_{p4}".format(
@@ -42,7 +42,7 @@ def generatePygletGrating(grating, height=1080, width=1440,
                          pitch=canvas_size[0]*4)
 
 
-def generatePygletBWMap(height=1080, width=1440, L=50):
+def generatePygletBWMap(height=1280, width=1024, L=50):
     """Generate image with a given function."""
     colormap = {}
     source = [("white", (255, 255, 255, 255)),

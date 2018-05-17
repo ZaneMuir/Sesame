@@ -2,7 +2,7 @@
 
 from sesame_grating import movingGrate
 try:
-    from numpy2 import sin, cos, pi
+    from numpy import sin, cos, pi
 except ModuleNotFoundError:
     import logging
     logger = logging.getLogger(__name__)

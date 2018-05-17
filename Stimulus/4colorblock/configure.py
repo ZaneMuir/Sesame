@@ -2,9 +2,13 @@
 
 import pyglet
 import logging
-import os
-import numpy as np
 logger = logging.getLogger(__name__)
+import os
+try:
+    import numpy2 as np
+except ModuleNotFoundError:
+    import math as np
+
     
 
 def getPygletColorMap(colordict, height=1080, width=1440, suffix=""):
