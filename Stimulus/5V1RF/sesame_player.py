@@ -49,7 +49,7 @@ def flick(dt):
     global grating_v, counter
     global off_time, timer, sessionName
     global current_idx, mapping_seq, the_bar, screen_size
-    
+
     if elapsed() > timer and not is_stimulus_show:
         current_idx = (current_idx + 1) % len(mapping_seq)
         name, ori = mapping_seq[current_idx]
@@ -62,7 +62,7 @@ def flick(dt):
         the_bar.rotation = -ori
 
         is_stimulus_show = True
-        
+
         total_length = screen_size[0] / cos(ori/180*pi) if abs(
             cos(ori/180*pi)) > 1e-3 else screen_size[1] / sin(ori/180*pi)
 
@@ -70,10 +70,10 @@ def flick(dt):
         storeDataIntoFile(elapsed(), name, lag, sessionName)
         timer += lag
 
-        
+
         loop = int(counter / len(mapping_seq))
         num = counter % len(mapping_seq) + 1
-        logger.info("{round}:{num}/{total}:{name}-{lag}".format(round=loop, num=num, 
+        logger.info("{round}:{num}/{total}:{name}-{lag}".format(round=loop, num=num,
                                                           total=len(mapping_seq), name=name,
                                                           lag=lag))
         counter += 1
@@ -167,7 +167,7 @@ def start(bar_width, bar_color, windowN=1):
 
     app.run()
 
-def main(session, seq, velocity, low_time, bar_width, bar_color, inital_wait=30):
+def main(session, seq, velocity, low_time, bar_width, bar_color, inital_wait=31):
     global sessionName, mapping_seq, grating_v, off_time, timer
     sessionName = session
     mapping_seq = seq
