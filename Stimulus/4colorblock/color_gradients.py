@@ -10,7 +10,7 @@ if __name__ == '__main__':
         --window=WINDOWN    # number of secondary screeens [default: 1]
         --mode==MODE        # gradients mode, either be "discrete" or "continuous" [default: discrete]
         --initial=WAIT  # the initial waiting time [default: 60]
-        --hightime=HIGH     # high time duration [default: 3]
+        --hightime=HIGH     # high time duration [default: 4]
         --lowtime=LOW       # low time duration [default: 3]
     """.format(version=__version__)
 

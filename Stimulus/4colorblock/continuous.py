@@ -12,10 +12,22 @@ _colors = {
 }
 
 
-def _up_linear(shiftt): return 50 + 50 * shiftt
+def _up_linear(shiftt): 
+    value = 16 + 64 * shiftt
+    if value < 0:
+        value = 0
+    elif value > 255:
+        value = 255
+    return value
 
 
-def _down_linear(shiftt): return 255 - 50 * shiftt
+def _down_linear(shiftt): 
+    value = 255 - 64 * shiftt
+    if value < 0:
+        value = 0
+    elif value > 255:
+        value = 255
+    return value
 
 
 _stim_seq = [
