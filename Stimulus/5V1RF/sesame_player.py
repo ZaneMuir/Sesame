@@ -67,7 +67,7 @@ def flick(dt):
             cos(ori/180*pi)) > 1e-3 else screen_size[1] / sin(ori/180*pi)
 
         lag = abs(total_length) / grating_v
-        storeDataIntoFile(elapsed(), name, lag, sessionName)
+        storeDataIntoFile(elapsed(), name, lag, name=sessionName)
         timer += lag
 
 
@@ -81,7 +81,7 @@ def flick(dt):
     elif elapsed() > timer and is_stimulus_show:
         is_stimulus_show = False
         timer += off_time
-        storeDataIntoFile(elapsed(), "OFF", sessionName)
+        storeDataIntoFile(elapsed(), "OFF",lag=off_time, name=sessionName)
 
     if is_stimulus_show:
         ori = - the_bar.rotation
@@ -90,7 +90,7 @@ def flick(dt):
 
 
 def storeDataIntoFile(_time, marker, lag=0, name="", _prefix="", _dir="recording"):
-    filename = os.path.join(_dir, _prefix+time.strftime("%y%m%d_")+name+".csv")
+    filename = os.path.join(_dir, _prefix+time.strftime("%y%m%d_V1RF_")+name+".csv")
     if not os.path.isfile(filename):
         with open(filename, "w") as output:
             output.write("time,marker,lag")
@@ -123,7 +123,7 @@ def start(bar_width, bar_color, windowN=1):
     def on_key_press(symbol, modifier):
         "quiting sequence"
         if symbol == key.ESCAPE or symbol == key.Q:
-            storeDataIntoFile(time.time(), "QUIT", sessionName)
+            storeDataIntoFile(time.time(), "QUIT", name=sessionName)
             exit(0)
 
     @controller.event
@@ -155,7 +155,7 @@ def start(bar_width, bar_color, windowN=1):
 
     # =========================================================
     start_time = time.time()  # absolute time of starting
-    storeDataIntoFile(start_time, "START", sessionName)
+    storeDataIntoFile(start_time, "START", name=sessionName)
 
     pyglet.clock.schedule(flick)
     for index in range(windowN):
