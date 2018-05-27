@@ -9,7 +9,7 @@ if __name__ == '__main__':
         --debug
         --window=WINDOWN    # number of secondary screeens [default: 1]
         --mode==MODE        # gradients mode, either be "discrete" or "continuous" [default: discrete]
-        --initialwait=WAIT  # the initial waiting time [default: 60]
+        --initial=WAIT  # the initial waiting time [default: 60]
         --hightime=HIGH     # high time duration [default: 3]
         --lowtime=LOW       # low time duration [default: 3]
     """.format(version=__version__)
@@ -27,9 +27,11 @@ if __name__ == '__main__':
         from discrete import start_experiment
     elif arguments['--mode'] == 'continuous':
         from continuous import start_experiment
+    elif arguments['--mode'] == 'tuning':
+        from tuning_map import start_experiment
     else:
         raise ValueError("no such mode yet: "+arguments['--mode'])
 
     start_experiment(arguments['SUBJECT'], arguments['--mode'], int(arguments['--window']),
-                     int(arguments['--initialwait']), int(arguments['--hightime']), 
+                     int(arguments['--initial']), int(arguments['--hightime']), 
                      int(arguments['--lowtime']),)
